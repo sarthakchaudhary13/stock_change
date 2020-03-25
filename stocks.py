@@ -68,7 +68,9 @@ def alert(inc,dec,market  = True):
         else:
             print("No stocks have decreased more than 2% in the last 30 seconds")
     else:
-        print("################## NO CHANGE IN PRICES IN LAST 30 SECONDS ##########################")
+        print("################## MARKET IS CLOSED ##########################")
+        return False
+
 
     print("______________________________________________________________________________")
 
@@ -99,7 +101,9 @@ def change(data1=None):
     market = True
     if len(change) == len(change[change['Change']==0]):
         market = False
-    alert(inc,dec,market)
+    mar = alert(inc,dec,market)
+    if mar is False:
+        return False
     return data2
 
 
@@ -114,10 +118,13 @@ system("clear")
 print('\x1b[3;31;43m' + '-_-_-_-_-_-_-_-_-_-_-_-_-_WELCOME-_-_-_-_-_-_-_-_-_-_-_-_-_-_' + '\x1b[0m')
 print('\x1b[3;31;43m' + 'Please Wait 30 seconds for the data to load' + '\x1b[0m')
 data = change()
-stock = RepeatedTimer(30,change,data)
-try:
-    sleep(1800)#Wait for timer to run for 30 mins i.e 18000 seconds
-finally:
-    stock.stop()#stop the process
+if data is not False:
+    stock = RepeatedTimer(30,change,data)
+    try:
+        sleep(1800)#Wait for timer to run for 30 mins i.e 18000 seconds
+    finally:
+        stock.stop()#stop the process
+else:
+        print(print('\x1b[3;31;43m' + "TIME REMAINING TILL THE PROGRAM ENDS: 0 minutes" + '\x1b[0m'))
 
 ###############################END of The program####################################
